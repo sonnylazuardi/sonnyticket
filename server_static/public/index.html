@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>SonnyTicket - Online ticket reservation and booking</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/orange.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+  </head>
+  <body ng-app="SonnyTicket" ng-controller="TicketCtrl">
+  
+    <a id="menu-toggle" href="#menu" class="btn btn-links btn-lg toggle"><i class="fa fa-bars fa-lg"></i></a>
+    <div id="sidebar-wrapper">
+      <div>
+        <a id="menu-close" href="#menu" class="btn btn-links btn-lg toggle"><i class="fa fa-times fa-lg"></i></a>
+      </div>
+      <ul class="sidebar-nav">
+        <li class="spacer-25px"></li>
+        <li><a href="#ticket">Tickets</a></li>
+        <li><a href="#reservation">Reservations</a></li>
+      </ul>
+    </div>
+    <section id="header" class="container-fluid text-white">
+      <div class="container">
+        <div class="row clearfix">
+          <div class="col-md-6 column">
+            <h1 class="text-left">
+              <i id="logo" class="fa fa-map-marker"></i> SonnyTicket
+            </h1>
+          
+          </div>
+        </div>
+      </div>
+    </section>   
+    
+    <div id="ticket" class="container text-blue">
+      <div class="row clearfix">
+        <div class="col-md-12 column p_title">
+          <h2 class="text-center">All Flights</h2>
+           <p class="lead text-center">You can discover all flight here</p>
+        </div>
+      </div>
+      <div class="row clearfix staff">
+        <div class="loader text-center" ng-show="tickets.length == 0">
+          Loading Tickets <i class="fa fa-refresh fa-spin"></i>
+        </div>
+        <div class="col-xs-6 col-md-3 column text-center" ng-repeat="ticket in tickets">
+          <a ng-click="active(ticket)" href="#detail">
+            <div ng-class="{active: flight.id == ticket.id, button: true}">
+              <img class="img-circle" alt="140x140" ng-src="{{ticket.image}}" />
+              <h3 class="">{{ticket.flight}}</h3>
+              <span>{{ticket.route}}</span>
+              <div>{{ticket.id}}</div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div id="detail" class="container-fluid text-white" ng-show="flight">
+      <div class="container">
+        <div class="row clearfix">
+          <div class="col-md-12 column p_title">
+            <h2 class="text-center">Reservation</h2>
+          </div>
+        </div>
+        <div class="row clearfix staff">
+          <div class="form" >
+            <form>
+              <div class="col-md-8 col-md-offset-2">
+                <div class="row">
+                  <div class="col-xs-6 col-md-4 column text-center">
+                    <img class="img-circle" alt="140x140" ng-src="{{flight.image}}" />
+                    <h3 class="">{{flight.flight}}</h3>
+                    <span>{{flight.route}}</span>
+                    <div>{{flight.id}}</div>
+                  </div>
+                  <div class="col-xs-6 col-md-8">
+                    <div class="form-group">
+                      <label>Full Name</label>
+                      <input type="text" class="form-control" placholder="Full Name" ng-model="flight.full_name">
+                    </div>
+                    <div class="form-group">
+                      <label>ID Card Number</label>
+                      <input type="text" class="form-control" placholder="ID Card Number" ng-model="flight.id_number">
+                    </div>
+                    <div class="form-group">
+                      <label>Phone</label>
+                      <input type="text" class="form-control" placholder="Phone" ng-model="flight.phone">
+                    </div>
+                    <div class="form-group">
+                      <button type="submit" ng-click="submit()" class="btn btn-primary">Save</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div> <!-- container -->
+    <!-- end about -->
+    <div id="reservation" class="text-white">
+      <div class="container">
+        <div class="row clearfix">
+          <div class="col-md-12 column p_title">
+            <h2 class="text-center">All Reservations</h2>
+          </div>
+        </div>
+        <div class="row clearfix staff">
+          <div class="loader text-center" ng-show="reservations.length == 0">
+            Loading Reservations <i class="fa fa-refresh fa-spin"></i>
+          </div>
+          <div class="col-xs-6 col-md-3 column text-center" ng-repeat="reservation in reservations">
+            <div ng-class="{active: flight.id == reservation.id, button: true}" ng-click="active(reservation)">
+              <img class="img-circle" alt="140x140" ng-src="{{reservation.image}}" />
+              <h3 class="">{{reservation.flight}}</h3>
+              <span>{{reservation.route}}</span>
+              <div>{{reservation.id}}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> <!-- container -->
+    <!-- Download -->
+    <section id="download" class="text-white">
+      <div class="container">
+        <div class="row clearfix">
+          <div class="col-md-12 column text-center">
+            <h2 class="text-center">SonnyTicket</h2> 
+            <p class="lead text-center">Copyright &copy; 2014</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- end download -->
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/angular.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/main.js"></script>
+
+    <script>
+      var serverUrl = 'http://localhost:3001/';
+      angular.module('SonnyTicket', [])
+
+      .controller('TicketCtrl', function($scope, $http){
+        $scope.tickets = [];
+        $scope.reservations = [];
+
+        $http.get(serverUrl + 'flight/all').success(function(data) {
+          $scope.tickets = data;
+        });
+
+        $http.get(serverUrl + 'reservation/all').success(function(data) {
+          $scope.reservations = data;
+        });
+        $scope.active = function(ticket) {
+          $scope.flight = ticket;
+        }
+        $scope.submit = function() {
+          $http.post(serverUrl + 'reservation/create', $scope.flight).success(function(data) {
+            console.log(data);
+            $scope.flight = null;
+          });
+        }
+        $scope.flight = null;
+      });
+    </script>
+
+  </body>
+</html>
