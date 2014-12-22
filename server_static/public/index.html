@@ -150,22 +150,37 @@
         $scope.tickets = [];
         $scope.reservations = [];
 
-        $http.get(serverUrl + 'flight/all').success(function(data) {
-          $scope.tickets = data;
-        });
+        var flight = function() {
+          $http.get(serverUrl + 'flight/all').success(function(data) {
+            $scope.tickets = data;
+          });
+        }
 
-        $http.get(serverUrl + 'reservation/all').success(function(data) {
-          $scope.reservations = data;
-        });
+        var reservation = function() {
+          $http.get(serverUrl + 'reservation/all').success(function(data) {
+            $scope.reservations = data;
+          });
+        }
+
+        var init = function() {
+          reservation();
+          flight();
+        }
+
+        init();
+
         $scope.active = function(ticket) {
           $scope.flight = ticket;
         }
+
         $scope.submit = function() {
           $http.post(serverUrl + 'reservation/create', $scope.flight).success(function(data) {
             console.log(data);
             $scope.flight = null;
+            reservation();
           });
         }
+        
         $scope.flight = null;
       });
     </script>

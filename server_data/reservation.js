@@ -38,7 +38,7 @@ ReservationProvider.prototype.save = function(reservations, callback) {
       reservation = reservations[i];
     }
     
-    this.db.save(reservations, function(error, result) {
+    this.db.save('', reservations, function(error, result) {
       if( error ) callback(error)
       else {
         db.save('_design/reservation', {

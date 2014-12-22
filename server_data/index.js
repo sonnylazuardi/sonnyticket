@@ -2,10 +2,6 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var multer = require('multer'); 
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(multer());
-
 var allowCrossDomain = function(req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
@@ -17,6 +13,9 @@ var cradle = require('cradle');
 
 var app = express();
 
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(multer());
 app.use(allowCrossDomain);
 
 var FlightProvider = require('./flight').FlightProvider;
@@ -77,12 +76,10 @@ app.get('/reservation/all', function(req, res) {
 });
 
 app.post('/reservation/create', function(req, res) {
-    // var data = req.query;
-    // console.log(req.body.data);
-    res.json(req.body);
-    // reservationProvider.save(data, function(error, docs) {
-    //     res.json(docs);
-    // });
+    var data = req.body;
+    reservationProvider.save(data, function(error, docs) {
+        res.json(docs);
+    });
 });
 
 app.listen(3001);
