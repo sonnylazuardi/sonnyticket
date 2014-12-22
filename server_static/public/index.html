@@ -49,7 +49,7 @@
         </div>
         <div class="col-xs-6 col-md-3 column text-center" ng-repeat="ticket in tickets">
           <a ng-click="active(ticket)" href="#detail">
-            <div ng-class="{active: flight.id == ticket.id, button: true}">
+            <div ng-class="{actives: flight.id == ticket.id, button: true}">
               <img class="img-circle" alt="140x140" ng-src="{{ticket.image}}" />
               <h3 class="">{{ticket.flight}}</h3>
               <span>{{ticket.route}}</span>
@@ -114,11 +114,13 @@
             Loading Reservations <i class="fa fa-refresh fa-spin"></i>
           </div>
           <div class="col-xs-6 col-md-3 column text-center" ng-repeat="reservation in reservations">
-            <div ng-class="{active: flight.id == reservation.id, button: true}" ng-click="active(reservation)">
+            <div ng-class="{actives: flight.id == reservation.id, button: true}" ng-click="active(reservation)">
               <img class="img-circle" alt="140x140" ng-src="{{reservation.image}}" />
               <h3 class="">{{reservation.flight}}</h3>
-              <span>{{reservation.route}}</span>
-              <div>{{reservation.id}}</div>
+              <span>{{reservation.route}} <i class="fa fa-plane"></i> {{reservation.id}}</span>
+              <div><i class="fa fa-user"></i> {{reservation.full_name}} <i class="fa fa-phone"></i> {{reservation.phone}}</div>
+              <div><i class="fa fa-calendar"></i> {{reservation.id_number}}</div>
+              <div></div>
             </div>
           </div>
         </div>
@@ -180,7 +182,7 @@
             reservation();
           });
         }
-        
+
         $scope.flight = null;
       });
     </script>

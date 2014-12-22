@@ -333,10 +333,13 @@ fieldset[disabled] .btn-submit.active {
     margin-right: 10px;
 }
 
-.active {
+.actives {
   border: 5px solid #e84e1b;
 }
 
 .button {
   cursor: pointer;
+  height: 325px;
+  overflow: hidden;
+  padding: 20px;
 }

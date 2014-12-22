@@ -24,10 +24,21 @@ var flightProvider= new FlightProvider();
 var ReservationProvider = require('./reservation').ReservationProvider;
 var reservationProvider= new ReservationProvider();
 
+app.get('/', function(req, res) {
+    var out = {
+        name: 'SonnyTicket API : Server Data',
+        version: '1.0.0',
+        author: 'Sonny Lazuardi',
+    };
+    res.json(out);
+});
+
 app.get('/flight/all', function(req, res){
     flightProvider.findAll(function(error, docs){
         console.log(error);
-        res.json(docs);
+        setTimeout(function() {
+            res.json(docs);    
+        }, 2000);
     });
 });
 
@@ -71,7 +82,9 @@ app.get('/flight/add', function(req, res){
 
 app.get('/reservation/all', function(req, res) {
     reservationProvider.findAll(function(error, docs){
-        res.json(docs);
+        setTimeout(function() {
+            res.json(docs);    
+        }, 2000);
     });
 });
 
